@@ -22,7 +22,15 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // domain config
 app.get('/', (req, res) => {
-    return res.render('index');
+    return res.redirect('/auth/login');
+});
+
+app.get('/auth/login', (req, res) => {
+    return res.render('login');
+});
+
+app.get('/auth/register', (req, res) => {
+    return res.render('register');
 });
 
 // connect to database and start server
