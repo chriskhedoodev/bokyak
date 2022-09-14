@@ -1,6 +1,7 @@
 // system imports
 const dotenv = require('dotenv');
 const express = require('express');
+const path = require('path');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const helmet = require('helmet');
@@ -11,6 +12,8 @@ dotenv.config();
 
 // server config
 const app = express();
+app.set('view engine', 'pug');
+app.set('views', './src/views');
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -18,7 +21,7 @@ app.use(helmet());
 
 // domain config
 app.get('/', (req, res) => {
-    return res.send('Big things are coming for Bokyak. Hey Dean!!!');
+    return res.render('index');
 });
 
 // connect to database and start server
