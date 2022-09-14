@@ -16,6 +16,11 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(helmet());
 
+// domain config
+app.get('/', (req, res) => {
+    return res.send('Big things are coming for Bokyak. Hey Dean!!!');
+});
+
 // connect to database and start server
 mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true }, () => {
     console.log('Connected to database.');
