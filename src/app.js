@@ -1,10 +1,10 @@
 // system imports
 const dotenv = require('dotenv');
 const express = require('express');
-const path = require('path');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const helmet = require('helmet');
+const path = require('path');
 const mongoose = require('mongoose');
 
 // environment config
@@ -18,6 +18,7 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(helmet());
+app.use(express.static(path.join(__dirname, 'public')));
 
 // domain config
 app.get('/', (req, res) => {
@@ -28,7 +29,7 @@ app.get('/', (req, res) => {
 mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true }, () => {
     console.log('Connected to database.');
 
-    let port = process.env.PORT || 3000;
+    let port = process.env.PORT;
     app.listen(port, () => {
         console.log(`Server has started on port ${port}`);
     });
