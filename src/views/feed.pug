@@ -5,21 +5,9 @@ html(lang="en")
         meta(http-equiv="X-UA-Compatible", content="IE=edge")
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
         link(href='https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css' rel='stylesheet' integrity='sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC' crossorigin='anonymous')
-        link(href='/css/auth.css' rel='stylesheet')
+        link(href='/css/main.css' rel='stylesheet')
         title Bokyak
     body
-        .wrapper
-            .container
-                h1 Bokyak
-                p Land of the Homeless
-
-                .errors
-                    p #{errorMessage}
-
-                form(action="/auth/login", method="POST")
-                    input(type="text", name="username", placeholder="Username", required="")
-                    input(type="password", name="password", placeholder="Password", required="")
-                    input(type="submit", value="Login")
-                a(href="/auth/register") Need an account? Register here.
-
+        h1 Newsfeed
+        p Newsfeed
         script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js' integrity='sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM' crossorigin='anonymous')
