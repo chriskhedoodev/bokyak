@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const User = require('../models/user');
 const bcrypt = require('bcrypt');
+const middleware = require('../middleware/middleware');
 
 router.get('/register', (req, res) => {
     return res.render('register')
@@ -94,6 +95,11 @@ router.post('/login', async (req, res) => {
             'login',
             createErrorResponse('An internal server error occurred. Please try again.'));
     }
+});
+
+router.post('/logout', middleware.requireLogin, (req, res) => {
+    req.session.destroy();
+    return res.redirect('/');
 });
 
 function createErrorResponse(errorMessage) {
