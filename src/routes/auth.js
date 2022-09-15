@@ -36,11 +36,12 @@ router.post('/register', async (req, res) => {
             if (!user) {
                 let salt = await bcrypt.genSalt(10);
                 let passwordHash = await bcrypt.hash(password, salt);
-                await User.create({
+                let newUser = await User.create({
                     username: username,
                     passwordHash: passwordHash
                 });
-    
+
+                req.session.user = newUser;
                 return res.redirect('/feed');
             }
 
@@ -74,6 +75,7 @@ router.post('/login', async (req, res) => {
 
             let authenticated = await bcrypt.compare(password, user.passwordHash);
             if (authenticated) {
+                req.session.user = user;
                 return res.redirect('/feed');
             }
 
