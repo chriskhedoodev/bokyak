@@ -1,5 +1,6 @@
 body {
     background-image: radial-gradient(circle, #29524A, #E9BCB7);
+    justify-content: center;
 }
 
 .wrapper {
