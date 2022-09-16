@@ -7,7 +7,7 @@ const postSchema = new mongoose.Schema({
     },
     createdDate: {
         type: Date,
-        default: Date.now()
+        default: new Date()
     },
     authorUserId: {
         type: String,
