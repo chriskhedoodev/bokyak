@@ -11,7 +11,8 @@ router.get('/', middleware.requireLogin, async (req, res) => {
     for (let post of posts) {
         postViewModels.push({
             content: post.content,
-            timeSince: timeSince(post.createdDate)
+            timeSince: timeSince(post.createdDate),
+            numLikes: post.likedUserIds.length
         });
     }
     return res.render('feed', { posts: postViewModels, userId: userId })
@@ -27,7 +28,18 @@ router.post('/', middleware.requireLogin, async (req, res) => {
         });
     }
 
-    return res.redirect('/');
+    return res.redirect('/feed');
+});
+
+router.post('/:postId/like', async (req, res) => {
+    let postId = req.params.postId;
+    let userId = req.session.user._id;
+
+    let post = await Post.findById(postId);
+    if (post && !post.likedUserIds.includes(userId)) {
+        post.likedUserIds.add(userId);
+        await post.save();
+    }
 });
 
 function isNullOrWhitespace(str) {
