@@ -16,13 +16,24 @@ html(lang="en")
             input(type="submit", value="Logout")
 
         br
+
+        form(action="/feed", method="POST")
+            input(type="textarea" name="content" placeholder="What's on your mind?")
+            input(type="hidden" name="userId" value=userId)
+            input(type="submit" value="Post")
+
+        br
         each post in posts
             .container
                 .row.post-container
                     .col-4.like-square
-                        i.bi.bi-hand-thumbs-up
+                        form(action='/feed/' + post.postId + '/like' method='POST')
+                            input(type="hidden" name="userId" value=userId)
+                            button.btn(type='submit')
+                                i.bi.bi-hand-thumbs-up
                         h1 #{post.numLikes}
-                        i.bi.bi-hand-thumbs-down
+                        button.btn(type='submit')
+                            i.bi.bi-hand-thumbs-down
                     .col-8.post-content
                         | #{post.content}
                         .post-date

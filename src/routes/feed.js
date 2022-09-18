@@ -10,6 +10,7 @@ router.get('/', middleware.requireLogin, async (req, res) => {
     let postViewModels = [];
     for (let post of posts) {
         postViewModels.push({
+            postId: post._id,
             content: post.content,
             timeSince: timeSince(post.createdDate),
             numLikes: post.likedUserIds.length
@@ -37,9 +38,11 @@ router.post('/:postId/like', async (req, res) => {
 
     let post = await Post.findById(postId);
     if (post && !post.likedUserIds.includes(userId)) {
-        post.likedUserIds.add(userId);
+        post.likedUserIds.push(userId);
         await post.save();
     }
+
+    return res.redirect('/feed');
 });
 
 function isNullOrWhitespace(str) {

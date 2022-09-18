@@ -29,6 +29,7 @@ body {
 
 .post-content {
     display: inline-block;
+    padding-top: 5px;
     width: 80%;
 }
 
