@@ -1,4 +1,4 @@
-body{
+/* body{
     background:#eee;
     justify-content: center;
     margin-top: 15px;
@@ -97,4 +97,38 @@ body{
 
 a.btn {
     margin-top: 5px;
+} */
+
+body {
+    background-color: #eee;
+    justify-content: center;
+    margin-top: 15px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.post-container {
+    background-color: #fff;
+    border-radius: 30px;
+}
+
+.post-divider {
+    height: 20px;
+    background-color: #eee;
+    width: 100%;
+}
+
+.like-square {
+    overflow: hidden;
+    width: 20%;
+    text-align: center;
+    display: inline-block;
+    margin: auto;
+}
+
+.post-content {
+    display: inline-block;
+    width: 80%;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }

@@ -20,9 +20,10 @@ router.get('/', middleware.requireLogin, async (req, res) => {
 router.post('/', middleware.requireLogin, async (req, res) => {
     let { content, userId } = req.body;
     if (!isNullOrWhitespace(content)) {
-        let newPost = await Post.create({
+        await Post.create({
             content: content,
-            authorUserId: userId
+            authorUserId: userId,
+            createdDate: new Date()
         });
     }
 
@@ -34,7 +35,7 @@ function isNullOrWhitespace(str) {
 }
 
 function timeSince(date) {
-    var seconds = Math.floor((new Date() - date) / 1000);
+    var seconds = Math.floor((Date.now() - date.getTime()) / 1000);
     var interval = seconds / 31536000;
   
     if (interval > 1) {
