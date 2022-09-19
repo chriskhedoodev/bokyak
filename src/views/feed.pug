@@ -31,12 +31,12 @@ html(lang="en")
                             form(action='/feed/' + post.postId + '/like' method='POST')
                                 input(type="hidden" name="userId" value=userId)
                                 button.btn(type='submit')
-                                    i.bi.bi-hand-thumbs-up
+                                    i.h3.bi.bi-hand-thumbs-up
                         else
                             form(action='/feed/' + post.postId + '/like' method='POST')
                                 input(type="hidden" name="userId" value=userId)
                                 button.btn(type='submit')
-                                    i.bi.bi-hand-thumbs-up-fill
+                                    i.h3.bi.bi-hand-thumbs-up-fill
 
                         h1 #{post.score}
 
@@ -44,12 +44,12 @@ html(lang="en")
                             form(action='/feed/' + post.postId + '/dislike' method='POST')
                                 input(type="hidden" name="userId" value=userId)
                                 button.btn(type='submit')
-                                    i.bi.bi-hand-thumbs-down
+                                    i.h3.bi.bi-hand-thumbs-down
                         else
                             form(action='/feed/' + post.postId + '/dislike' method='POST')
                                 input(type="hidden" name="userId" value=userId)
                                 button.btn(type='submit')
-                                    i.bi.bi-hand-thumbs-down-fill
+                                    i.h3.bi.bi-hand-thumbs-down-fill
 
 
                         //- button.btn(type='submit')
