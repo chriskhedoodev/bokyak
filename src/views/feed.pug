@@ -27,13 +27,33 @@ html(lang="en")
             .container
                 .row.post-container
                     .col-4.like-square
-                        form(action='/feed/' + post.postId + '/like' method='POST')
-                            input(type="hidden" name="userId" value=userId)
-                            button.btn(type='submit')
-                                i.bi.bi-hand-thumbs-up
-                        h1 #{post.numLikes}
-                        button.btn(type='submit')
-                            i.bi.bi-hand-thumbs-down
+                        if !post.currentUserLikesPost
+                            form(action='/feed/' + post.postId + '/like' method='POST')
+                                input(type="hidden" name="userId" value=userId)
+                                button.btn(type='submit')
+                                    i.bi.bi-hand-thumbs-up
+                        else
+                            form(action='/feed/' + post.postId + '/like' method='POST')
+                                input(type="hidden" name="userId" value=userId)
+                                button.btn(type='submit')
+                                    i.bi.bi-hand-thumbs-up-fill
+
+                        h1 #{post.score}
+
+                        if !post.currentUserDislikesPost
+                            form(action='/feed/' + post.postId + '/dislike' method='POST')
+                                input(type="hidden" name="userId" value=userId)
+                                button.btn(type='submit')
+                                    i.bi.bi-hand-thumbs-down
+                        else
+                            form(action='/feed/' + post.postId + '/dislike' method='POST')
+                                input(type="hidden" name="userId" value=userId)
+                                button.btn(type='submit')
+                                    i.bi.bi-hand-thumbs-down-fill
+
+
+                        //- button.btn(type='submit')
+                        //-     i.bi.bi-hand-thumbs-down
                     .col-8.post-content
                         | #{post.content}
                         .post-date

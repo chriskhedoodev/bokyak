@@ -13,7 +13,9 @@ router.get('/', middleware.requireLogin, async (req, res) => {
             postId: post._id,
             content: post.content,
             timeSince: timeSince(post.createdDate),
-            numLikes: post.likedUserIds.length
+            score: post.likedUserIds.length - post.dislikedUserIds.length,
+            currentUserLikesPost: post.likedUserIds.includes(userId),
+            currentUserDislikesPost: post.dislikedUserIds.includes(userId)
         });
     }
     return res.render('feed', { posts: postViewModels, userId: userId })
@@ -37,8 +39,39 @@ router.post('/:postId/like', async (req, res) => {
     let userId = req.session.user._id;
 
     let post = await Post.findById(postId);
-    if (post && !post.likedUserIds.includes(userId)) {
-        post.likedUserIds.push(userId);
+    if (post) {
+        if (!post.likedUserIds.includes(userId)) {
+            post.likedUserIds.push(userId);
+        } else {
+            post.likedUserIds = post.likedUserIds.filter(uid => uid !== userId);
+        }
+
+        if (post.dislikedUserIds.includes(userId)) {
+            post.dislikedUserIds = post.dislikedUserIds.filter(uid => uid !== userId);
+        }
+
+        await post.save();
+    }
+
+    return res.redirect('/feed');
+});
+
+router.post('/:postId/dislike', async (req, res) => {
+    let postId = req.params.postId;
+    let userId = req.session.user._id;
+
+    let post = await Post.findById(postId);
+    if (post) {
+        if (!post.dislikedUserIds.includes(userId)) {
+            post.dislikedUserIds.push(userId);
+        } else {
+            post.dislikedUserIds = post.dislikedUserIds.filter(uid => uid !== userId);
+        }
+
+        if (post.likedUserIds.includes(userId)) {
+            post.likedUserIds = post.likedUserIds.filter(uid => uid !== userId);
+        }
+
         await post.save();
     }
 
