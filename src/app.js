@@ -32,7 +32,14 @@ app.set('views', './src/views');
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.use(helmet());
+app.use(helmet.contentSecurityPolicy({
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'", 'code.jquery.com', 'maxcdn.bootstrapcdn.com', 'https://cdn.jsdelivr.net'],
+      styleSrc: ["'self'", 'maxcdn.bootstrapcdn.com', 'https://cdn.jsdelivr.net'],
+      fontSrc: ["'self'", 'maxcdn.bootstrapcdn.com', 'https://cdn.jsdelivr.net']
+    }
+}));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // server domain config
