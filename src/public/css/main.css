@@ -37,3 +37,7 @@ body {
     color: gray;
     font-size: medium;
 }
+
+.extra-data .modal-dialog {
+    color: #000;
+}
