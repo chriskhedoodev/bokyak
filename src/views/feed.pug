@@ -42,7 +42,7 @@ html(lang="en")
                                     button.btn(type='submit')
                                         i.h3.bi.bi-caret-up-fill
 
-                            h3 #{post.score}
+                            h5 #{post.score}
 
                             if !post.currentUserDislikesPost
                                 form(action='/feed/' + post.postId + '/dislike' method='POST')
