@@ -23,39 +23,41 @@ html(lang="en")
             h4 #{post.content}
             h6 #{post.timeSince}
 
-            #comments
-                hr
-                each comment in post.comments
-                    .col-4.like-square
-                        if !comment.currentUserLikesComment
-                            form(action='/feed/' + comment.commentId + '/like' method='POST')
-                                input(type="hidden" name="userId" value=userId)
-                                button.btn(type='submit')
-                                    i.h3.bi.bi-hand-thumbs-up
-                        else
-                            form(action='/feed/' + comment.commentId + '/like' method='POST')
-                                input(type="hidden" name="userId" value=userId)
-                                button.btn(type='submit')
-                                    i.h3.bi.bi-hand-thumbs-up-fill
+            if post.comments.length > 0
+                #comments
+                    each comment in post.comments
+                        .col-4.like-square
+                            if !comment.currentUserLikesComment
+                                form(action='/feed/' + comment.commentId + '/like' method='POST')
+                                    input(type="hidden" name="userId" value=userId)
+                                    button.btn(type='submit')
+                                        i.h3.bi.bi-hand-thumbs-up
+                            else
+                                form(action='/feed/' + comment.commentId + '/like' method='POST')
+                                    input(type="hidden" name="userId" value=userId)
+                                    button.btn(type='submit')
+                                        i.h3.bi.bi-hand-thumbs-up-fill
 
-                        h3 #{comment.score}
+                            h3 #{comment.score}
 
-                        if !comment.currentUserDislikesComment
-                            form(action='/feed/' + comment.commentId + '/dislike' method='POST')
-                                input(type="hidden" name="userId" value=userId)
-                                button.btn(type='submit')
-                                    i.h3.bi.bi-hand-thumbs-down
-                        else
-                            form(action='/feed/' + comment.commentId + '/dislike' method='POST')
-                                input(type="hidden" name="userId" value=userId)
-                                button.btn(type='submit')
-                                    i.h3.bi.bi-hand-thumbs-down-fill
+                            if !comment.currentUserDislikesComment
+                                form(action='/feed/' + comment.commentId + '/dislike' method='POST')
+                                    input(type="hidden" name="userId" value=userId)
+                                    button.btn(type='submit')
+                                        i.h3.bi.bi-hand-thumbs-down
+                            else
+                                form(action='/feed/' + comment.commentId + '/dislike' method='POST')
+                                    input(type="hidden" name="userId" value=userId)
+                                    button.btn(type='submit')
+                                        i.h3.bi.bi-hand-thumbs-down-fill
 
-                    .col-8.comment-content
-                        | #{comment.content}
-                        .extra-data
-                            | #{comment.timeSince}
-                    hr
+                        .col-8.comment-content
+                            | #{comment.content}
+                            .extra-data
+                                | #{comment.timeSince}
+                        hr
+            else
+                p.text-success Be the first to reply!
 
         hr
         form.comment-box(action="/feed/" + post.postId + "/comment", method="POST")
