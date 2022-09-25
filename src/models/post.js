@@ -24,6 +24,10 @@ const postSchema = new mongoose.Schema({
     commentPostIds: {
         type: [String],
         default: []
+    },
+    parentPostId: {
+        type: String,
+        default: null
     }
 });
 

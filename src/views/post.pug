@@ -20,11 +20,47 @@ html(lang="en")
                             a.nav-link.active(type='submit' aria-current='page' href='/auth/logout') Logout
 
         #body-content
-            h1 Comments
-            form(action="/feed", method="POST")
-                .form-group
-                    textarea.form-control(rows='3' name='content' placeholder="What's on your mind?")
-                input.sm-margin-top(type="submit" value="Post")
-            hr
-            
+            h4 #{post.content}
+            h6 #{post.timeSince}
+
+            #comments
+                hr
+                each comment in post.comments
+                    .col-4.like-square
+                        if !comment.currentUserLikesComment
+                            form(action='/feed/' + comment.commentId + '/like' method='POST')
+                                input(type="hidden" name="userId" value=userId)
+                                button.btn(type='submit')
+                                    i.h3.bi.bi-hand-thumbs-up
+                        else
+                            form(action='/feed/' + comment.commentId + '/like' method='POST')
+                                input(type="hidden" name="userId" value=userId)
+                                button.btn(type='submit')
+                                    i.h3.bi.bi-hand-thumbs-up-fill
+
+                        h3 #{comment.score}
+
+                        if !comment.currentUserDislikesComment
+                            form(action='/feed/' + comment.commentId + '/dislike' method='POST')
+                                input(type="hidden" name="userId" value=userId)
+                                button.btn(type='submit')
+                                    i.h3.bi.bi-hand-thumbs-down
+                        else
+                            form(action='/feed/' + comment.commentId + '/dislike' method='POST')
+                                input(type="hidden" name="userId" value=userId)
+                                button.btn(type='submit')
+                                    i.h3.bi.bi-hand-thumbs-down-fill
+
+                    .col-8.comment-content
+                        | #{comment.content}
+                        .extra-data
+                            | #{comment.timeSince}
+                    hr
+
+        hr
+        form.comment-box(action="/feed/" + post.postId + "/comment", method="POST")
+            .form-group
+                textarea.form-control(rows='3' name='content' placeholder="Got a reply?")
+            input.sm-margin-top(type="submit" value="Post")
+
         script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js' integrity='sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM' crossorigin='anonymous')
