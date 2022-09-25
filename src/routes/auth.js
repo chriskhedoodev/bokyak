@@ -67,7 +67,7 @@ router.post('/login', async (req, res) => {
     try {
         let { username, password } = req.body;
         if (validateCredential(username) && validateCredential(password)) {
-            let user = await User.findOne({ username: username });
+            let user = await User.findOne({ username: { $regex: `^${username}$`, $options: 'i' } });
             if (!user) {
                 return res.render(
                     'login',
