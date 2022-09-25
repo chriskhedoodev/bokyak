@@ -9,8 +9,6 @@ router.get('/', middleware.requireLogin, async (req, res) => {
 
     let postViewModels = [];
     for (let post of posts) {
-        let comments = await Post.find({ _id: { $in: post.commentPostIds } });
-
         postViewModels.push({
             postId: post._id,
             content: post.content,
@@ -18,7 +16,7 @@ router.get('/', middleware.requireLogin, async (req, res) => {
             score: post.likedUserIds.length - post.dislikedUserIds.length,
             currentUserLikesPost: post.likedUserIds.includes(userId),
             currentUserDislikesPost: post.dislikedUserIds.includes(userId),
-            comments: comments
+            commentCount: post.commentPostIds.length
         });
     }
     return res.render('feed', { posts: postViewModels, userId: userId })

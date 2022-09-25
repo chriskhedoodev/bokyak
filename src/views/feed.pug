@@ -25,9 +25,8 @@ html(lang="en")
                 .form-group
                     textarea.form-control(rows='3' name='content' placeholder="What's on your mind?")
                 input.sm-margin-top(type="submit" value="Post")
+            hr
 
-
-            br
             each post in posts
                 .container
                     .row.post-container
@@ -62,6 +61,7 @@ html(lang="en")
                                 | #{post.timeSince}
 
                                 a.h5.bi.bi-pencil(href='/feed/' + post.postId)
+                                | #{post.commentCount}
 
                     .post-divider
 
