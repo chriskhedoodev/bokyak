@@ -9,71 +9,22 @@ html(lang="en")
         link(href='/css/main.css' rel='stylesheet')
         title Bokyak
     body
-        nav.navbar.navbar-expand-lg.navbar-light.bg-light
-            a.navbar-brand(href='#') Navbar
-            button.navbar-toggler(type='button' data-toggle='collapse' data-target='#navbarNavAltMarkup' aria-controls='navbarNavAltMarkup' aria-expanded='false' aria-label='Toggle navigation')
-                span.navbar-toggler-icon
-            #navbarNavAltMarkup.collapse.navbar-collapse
-                .navbar-nav
-                    a.nav-item.nav-link.active(href='#')
-                        | Home 
-                        span.sr-only (current)
-                    a.nav-item.nav-link(href='#') Features
-                    a.nav-item.nav-link(href='#') Pricing
-                    a.nav-item.nav-link.disabled(href='#') Disabled
+        nav.navbar.navbar-expand-lg.navbar-light.bg-success
+            .container-fluid
+                a.navbar-brand(href='/feed') Bokyak
+                button.navbar-toggler(type='button' data-bs-toggle='collapse' data-bs-target='#navbarNav' aria-controls='navbarNav' aria-expanded='false' aria-label='Toggle navigation')
+                    span.navbar-toggler-icon
+                #navbarNav.collapse.navbar-collapse
+                    ul.navbar-nav
+                        li.nav-item
+                            a.nav-link.active(type='submit' aria-current='page' href='/auth/logout') Logout
 
-        h1 Newsfeed
-        p Your unique User ID is #{userId}
-
-        form(action="/auth/logout", method="POST")
-            input(type="submit", value="Logout")
-
-        br
-
-        .container
-            .comments-container
-                h5 #{post.content}
-                h6.text-secondary #{post.timeSince}
-
-                form(action="/feed", method="POST")
-                    input(type="textarea" name="content" placeholder="Got a reply?")
-                    input(type="submit" value="Post")
-
-                hr
-
-                table.table
-                    tbody
-                        tr
-                            td.col-4.like-square
-                                h3 5
-                            td.col-8
-                                h4 6
-
-
-                .row
-                    .col-4.like-square
-                        if !post.currentUserLikesPost
-                            form(action='/feed/' + post.postId + '/like' method='POST')
-                                input(type="hidden" name="userId" value=userId)
-                                button.btn(type='submit')
-                                    i.h3.bi.bi-hand-thumbs-up
-                        else
-                            form(action='/feed/' + post.postId + '/like' method='POST')
-                                input(type="hidden" name="userId" value=userId)
-                                button.btn(type='submit')
-                                    i.h3.bi.bi-hand-thumbs-up-fill
-
-                        h3 #{post.score}
-
-                        if !post.currentUserDislikesPost
-                            form(action='/feed/' + post.postId + '/dislike' method='POST')
-                                input(type="hidden" name="userId" value=userId)
-                                button.btn(type='submit')
-                                    i.h3.bi.bi-hand-thumbs-down
-                        else
-                            form(action='/feed/' + post.postId + '/dislike' method='POST')
-                                input(type="hidden" name="userId" value=userId)
-                                button.btn(type='submit')
-                                    i.h3.bi.bi-hand-thumbs-down-fill
+        #body-content
+            h1 Comments
+            form(action="/feed", method="POST")
+                .form-group
+                    textarea.form-control(rows='3' name='content' placeholder="What's on your mind?")
+                input.sm-margin-top(type="submit" value="Post")
+            hr
             
         script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js' integrity='sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM' crossorigin='anonymous')
