@@ -97,7 +97,7 @@ router.post('/login', async (req, res) => {
     }
 });
 
-router.post('/logout', middleware.requireLogin, (req, res) => {
+router.get('/logout', middleware.requireLogin, (req, res) => {
     req.session.destroy();
     return res.redirect('/');
 });

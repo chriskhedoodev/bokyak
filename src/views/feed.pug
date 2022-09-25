@@ -2,75 +2,67 @@ doctype html
 html(lang="en")
     head
         meta(charset="UTF-8")
-        meta(http-equiv="X-UA-Compatible", content="IE=edge")
+        meta(content="IE=edge")
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
         link(href='https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css' rel='stylesheet' integrity='sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC' crossorigin='anonymous')
         link(href='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css' rel='stylesheet')
         link(href='/css/main.css' rel='stylesheet')
         title Bokyak
     body
-        h1 Newsfeed
-        p Your unique User ID is #{userId}
+        nav.navbar.navbar-expand-lg.navbar-light.bg-success
+            .container-fluid
+                a.navbar-brand(href='/feed') Bokyak
+                button.navbar-toggler(type='button' data-bs-toggle='collapse' data-bs-target='#navbarNav' aria-controls='navbarNav' aria-expanded='false' aria-label='Toggle navigation')
+                    span.navbar-toggler-icon
+                #navbarNav.collapse.navbar-collapse
+                    ul.navbar-nav
+                        li.nav-item
+                            a.nav-link.active(type='submit' aria-current='page' href='/auth/logout') Logout
 
-        form(action="/auth/logout", method="POST")
-            input(type="submit", value="Logout")
+        #body-content
+            h1 Newsfeed
+            form(action="/feed", method="POST")
+                .form-group
+                    textarea.form-control(rows='3' name='content' placeholder="What's on your mind?")
+                input.sm-margin-top(type="submit" value="Post")
 
-        br
 
-        form(action="/feed", method="POST")
-            input(type="textarea" name="content" placeholder="What's on your mind?")
-            input(type="hidden" name="userId" value=userId)
-            input(type="submit" value="Post")
+            br
+            each post in posts
+                .container
+                    .row.post-container
+                        .col-4.like-square
+                            if !post.currentUserLikesPost
+                                form(action='/feed/' + post.postId + '/like' method='POST')
+                                    input(type="hidden" name="userId" value=userId)
+                                    button.btn(type='submit')
+                                        i.h3.bi.bi-hand-thumbs-up
+                            else
+                                form(action='/feed/' + post.postId + '/like' method='POST')
+                                    input(type="hidden" name="userId" value=userId)
+                                    button.btn(type='submit')
+                                        i.h3.bi.bi-hand-thumbs-up-fill
 
-        br
-        each post in posts
-            .container
-                .row.post-container
-                    .col-4.like-square
-                        if !post.currentUserLikesPost
-                            form(action='/feed/' + post.postId + '/like' method='POST')
-                                input(type="hidden" name="userId" value=userId)
-                                button.btn(type='submit')
-                                    i.h3.bi.bi-hand-thumbs-up
-                        else
-                            form(action='/feed/' + post.postId + '/like' method='POST')
-                                input(type="hidden" name="userId" value=userId)
-                                button.btn(type='submit')
-                                    i.h3.bi.bi-hand-thumbs-up-fill
+                            h3 #{post.score}
 
-                        h1 #{post.score}
+                            if !post.currentUserDislikesPost
+                                form(action='/feed/' + post.postId + '/dislike' method='POST')
+                                    input(type="hidden" name="userId" value=userId)
+                                    button.btn(type='submit')
+                                        i.h3.bi.bi-hand-thumbs-down
+                            else
+                                form(action='/feed/' + post.postId + '/dislike' method='POST')
+                                    input(type="hidden" name="userId" value=userId)
+                                    button.btn(type='submit')
+                                        i.h3.bi.bi-hand-thumbs-down-fill
 
-                        if !post.currentUserDislikesPost
-                            form(action='/feed/' + post.postId + '/dislike' method='POST')
-                                input(type="hidden" name="userId" value=userId)
-                                button.btn(type='submit')
-                                    i.h3.bi.bi-hand-thumbs-down
-                        else
-                            form(action='/feed/' + post.postId + '/dislike' method='POST')
-                                input(type="hidden" name="userId" value=userId)
-                                button.btn(type='submit')
-                                    i.h3.bi.bi-hand-thumbs-down-fill
+                        .col-8.post-content
+                            | #{post.content}
+                            .extra-data
+                                | #{post.timeSince}
 
-                    .col-8.post-content
-                        | #{post.content}
-                        .extra-data
-                            | #{post.timeSince}
+                                a.h5.bi.bi-pencil(href='/feed/' + post.postId)
 
-                            button.btn(type='button' data-bs-toggle='modal' data-bs-target='#exampleModal')
-                                i.bi.bi-pencil
-
-                            #exampleModal.modal.fade(tabindex='-1' aria-labelledby='exampleModalLabel' aria-hidden='true')
-                                .modal-dialog
-                                    .modal-content
-                                        .modal-header
-                                            h5#exampleModalLabel.modal-title #{post.content}
-                                            button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
-                                        .modal-body
-                                            | ...
-                                        //- .modal-footer
-                                        //-     button.btn.btn-secondary(type='button' data-bs-dismiss='modal') Close
-                                        //-     button.btn.btn-primary(type='button') Save changes
-
-                .post-divider
+                    .post-divider
 
         script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js' integrity='sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM' crossorigin='anonymous')

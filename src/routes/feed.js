@@ -9,20 +9,24 @@ router.get('/', middleware.requireLogin, async (req, res) => {
 
     let postViewModels = [];
     for (let post of posts) {
+        let comments = await Post.find({ _id: { $in: post.commentPostIds } });
+
         postViewModels.push({
             postId: post._id,
             content: post.content,
             timeSince: timeSince(post.createdDate),
             score: post.likedUserIds.length - post.dislikedUserIds.length,
             currentUserLikesPost: post.likedUserIds.includes(userId),
-            currentUserDislikesPost: post.dislikedUserIds.includes(userId)
+            currentUserDislikesPost: post.dislikedUserIds.includes(userId),
+            comments: comments
         });
     }
     return res.render('feed', { posts: postViewModels, userId: userId })
 });
 
 router.post('/', middleware.requireLogin, async (req, res) => {
-    let { content, userId } = req.body;
+    let content = req.body.content;
+    let userId = req.session.user._id;
     if (!isNullOrWhitespace(content)) {
         await Post.create({
             content: content,
@@ -34,7 +38,7 @@ router.post('/', middleware.requireLogin, async (req, res) => {
     return res.redirect('/feed');
 });
 
-router.post('/:postId/like', async (req, res) => {
+router.post('/:postId/like', middleware.requireLogin, async (req, res) => {
     let postId = req.params.postId;
     let userId = req.session.user._id;
 
@@ -56,7 +60,7 @@ router.post('/:postId/like', async (req, res) => {
     return res.redirect('/feed');
 });
 
-router.post('/:postId/dislike', async (req, res) => {
+router.post('/:postId/dislike', middleware.requireLogin, async (req, res) => {
     let postId = req.params.postId;
     let userId = req.session.user._id;
 
@@ -76,6 +80,42 @@ router.post('/:postId/dislike', async (req, res) => {
     }
 
     return res.redirect('/feed');
+});
+
+router.post('/:postId/comment', middleware.requireLogin, async (req, res) => {
+    let content = req.body.content;
+    let postId = req.params.postId;
+    let userId = req.session.user._id;
+
+    if (!isNullOrWhitespace(content)) {
+        let post = await Post.findById(postId);
+        if (post) {
+            let newPost = await Post.create({
+                content: content,
+                authorUserId: userId,
+                createdDate: new Date()
+            });
+
+            post.commentPostIds.push(newPost._id);
+            await post.save();
+        }
+    }
+});
+
+router.get('/:postId', middleware.requireLogin, async (req, res) => {
+    let post = await Post.findById(req.params.postId);
+    if (post) {
+        let postViewModel = {
+            content: post.content,
+            timeSince: timeSince(post.createdDate)
+        };
+
+        return res.render('post', {
+            post: postViewModel
+        });
+    }
+
+    return res.redirect('/');
 });
 
 function isNullOrWhitespace(str) {

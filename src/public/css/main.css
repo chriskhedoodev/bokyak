@@ -1,6 +1,14 @@
 body {
     background-color: #eee;
     justify-content: center;
+}
+
+nav {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+#body-content {
     margin-top: 15px;
     margin-left: 10px;
     margin-right: 10px;
@@ -38,6 +46,23 @@ body {
     font-size: medium;
 }
 
-.extra-data .modal-dialog {
-    color: #000;
+.bi-pencil {
+    margin-left: 10px;
+}
+
+.whitebg {
+    background-color: white;
+}
+
+.comments-container {
+    background-color: #fff;
+    border-radius: 30px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.sm-margin-top {
+    margin-top: 8px;
 }

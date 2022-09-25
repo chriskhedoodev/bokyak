@@ -35,9 +35,10 @@ app.use(bodyParser.json());
 app.use(helmet.contentSecurityPolicy({
     directives: {
       defaultSrc: ["'self'"],
-      scriptSrc: ["'self'", 'code.jquery.com', 'maxcdn.bootstrapcdn.com', 'https://cdn.jsdelivr.net'],
-      styleSrc: ["'self'", 'maxcdn.bootstrapcdn.com', 'https://cdn.jsdelivr.net'],
-      fontSrc: ["'self'", 'maxcdn.bootstrapcdn.com', 'https://cdn.jsdelivr.net']
+      scriptSrc: ["'self'", 'code.jquery.com', 'maxcdn.bootstrapcdn.com', 'https://cdn.jsdelivr.net', "'unsafe-inline'"],
+      styleSrc: ["'self'", 'maxcdn.bootstrapcdn.com', 'https://cdn.jsdelivr.net', "'unsafe-inline'"],
+      fontSrc: ["'self'", 'maxcdn.bootstrapcdn.com', 'https://cdn.jsdelivr.net'],
+      scriptSrcAttr: ["'unsafe-inline'"]
     }
 }));
 app.use(express.static(path.join(__dirname, 'public')));
