@@ -7,6 +7,7 @@ const helmet = require('helmet');
 const path = require('path');
 const mongoose = require('mongoose');
 const session = require('express-session');
+var MongoDBStore = require('connect-mongodb-session')(session);
 
 // domain imports
 const authRoutes = require('./routes/auth');
@@ -18,7 +19,10 @@ dotenv.config();
 // server infrastructure config
 const app = express();
 
-let store = new session.MemoryStore();
+let store = new MongoDBStore({
+  uri: process.env.MONGO_URL,
+  collection: 'sessions'
+});
 app.use(session({
   secret: 'some secret',
   cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 },
